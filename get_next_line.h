@@ -6,7 +6,7 @@
 /*   By: sabrenda <sabrenda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 18:50:50 by sabrenda          #+#    #+#             */
-/*   Updated: 2021/02/08 16:45:06 by sabrenda         ###   ########.fr       */
+/*   Updated: 2021/02/11 14:42:37 by sabrenda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char				*ft_mystrchr(const char *s, int c);
 char				*ft_mystrdup(const char *str);
 char				*ft_linestart_or_tail(char **buf_line);
 char				*ft_point_change(char *point_n, char **buf_line);
-t_gnl				*nw_lst(int fd);
+t_gnl				*nw_mylst(int fd);
 int					ft_clean(t_gnl **head, t_gnl *tmp, t_gnl *before);
 
 #endif

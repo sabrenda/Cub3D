@@ -6,7 +6,7 @@
 /*   By: sabrenda <sabrenda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 18:59:46 by sabrenda          #+#    #+#             */
-/*   Updated: 2021/02/08 16:41:21 by sabrenda         ###   ########.fr       */
+/*   Updated: 2021/02/11 14:43:42 by sabrenda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,13 @@ int		get_next_line(int fd, char **line)
 	before = NULL;
 	if (fd < 0 || !line || BUFFER_SIZE < 1)
 		return (-1);
-	if (!head && !(head = nw_lst(fd)))
+	if (!head && !(head = nw_mylst(fd)))
 		return (-1);
 	tmp = head;
 	while (tmp->fd != fd)
 	{
 		if (tmp->next == NULL)
-			if (!(tmp->next = nw_lst(fd)))
+			if (!(tmp->next = nw_mylst(fd)))
 				return (-1);
 		before = tmp;
 		tmp = tmp->next;

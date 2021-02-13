@@ -6,7 +6,7 @@
 /*   By: sabrenda <sabrenda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 14:06:35 by sabrenda          #+#    #+#             */
-/*   Updated: 2021/02/09 00:14:56 by sabrenda         ###   ########.fr       */
+/*   Updated: 2021/02/11 00:39:17 by sabrenda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ void make_map(t_list **head, int size)
 	{
 		ft_putendl(map[i]);
 	}
-
-
 }
 int main(int argc, char **argv)
 {

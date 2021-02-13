@@ -6,7 +6,7 @@
 /*   By: sabrenda <sabrenda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 17:39:00 by sabrenda          #+#    #+#             */
-/*   Updated: 2021/02/08 16:37:30 by sabrenda         ###   ########.fr       */
+/*   Updated: 2021/02/11 14:43:11 by sabrenda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*ft_mystrchr(const char *s, int c)
 	return (NULL);
 }
 
-t_gnl	*nw_lst(int fd)
+t_gnl	*nw_mylst(int fd)
 {
 	t_gnl	*new;
 
