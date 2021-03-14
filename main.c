@@ -5,67 +5,81 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabrenda <sabrenda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/08 14:06:35 by sabrenda          #+#    #+#             */
-/*   Updated: 2021/02/11 00:39:17 by sabrenda         ###   ########.fr       */
+/*   Created: 2021/03/13 01:32:23 by sabrenda          #+#    #+#             */
+/*   Updated: 2021/03/13 01:44:24 by sabrenda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft/libft.h"
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "cub3d.h"
 
-// #include <mlx.h>
-
-void	ft_putstr(char *s)
+void	ft_start_event(t_all *a)
 {
-	int	i;
+	mlx_hook(a->win.win, KEYPRESS, KEYPRESSMASK, ft_key_hit, a);
+	mlx_hook(a->win.win, KEYRELEASE, KEYRELEASEMASK, ft_key_release, a);
+	mlx_hook(a->win.win, 17, 1, destroy_all_2, a);
+	mlx_loop_hook(a->win.mlx, ft_run, a);
+	mlx_loop(a->win.mlx);
+}
 
-	i = 0;
-	while (s[i])
+int		ft_run(t_all *a)
+{
+	ft_free_img(a);
+	a->win.img = mlx_new_image(a->win.mlx, a->window_width, a->window_height);
+	if (!a->win.img)
+		destroy_all(a, "error create image\n");
+	a->win.addr = (int *)mlx_get_data_addr(a->win.img, &a->win.bpp,
+	&a->win.line_l, &a->win.en);
+	if (!a->win.addr)
+		destroy_all(a, "error create addres image\n");
+	ft_move_player(a);
+	ft_draw_floor_and_ceiling(a);
+	ft_rays(a);
+	ft_set_spr(a);
+	if (a->screenshoot)
+		creating_bmp(a, "screen_save.bmp");
+	mlx_put_image_to_window(a->win.mlx, a->win.win, a->win.img, 0, 0);
+	return (0);
+}
+
+void	ft_parser(t_all *all)
+{
+	if (!(ft_read_file_with_gnl(all)))
 	{
-		write(1, &s[i], 1);
-		i++;
+		write(1, "Error read file\n", 15);
+		close(all->fd);
+		ft_all_free(all);
+		ft_all_free_2(all);
+		exit(0);
+	}
+	if (!(check_file(all)))
+	{
+		write(1, "error info in file .cub\n", 24);
+		ft_all_free(all);
+		ft_all_free_2(all);
+		exit(0);
 	}
 }
 
-void	ft_putendl(char *s)
+int		main(int argc, char **argv)
 {
-	ft_putstr(s);
-	write(1, "\n", 1);
-}
+	t_all	all;
 
-void make_map(t_list **head, int size)
-{
-	char **map = ft_calloc(size + 1, sizeof(char *));
-	int i = -1;
-	t_list *tmp = *head;
-
-	while (tmp)
+	ft_init_null(&all);
+	if ((all.fd = ft_check_args(argc, argv, &all)) < 0)
+		return (error_shit("error open file\n"));
+	ft_parser(&all);
+	ft_load_txt(&all);
+	ft_init_all_2(&all);
+	if (!(ft_init_sprite(&all)))
+		destroy_all(&all, "error alocated memory for sprite\n");
+	if (!all.screenshoot)
 	{
-		map[++i] = tmp->content;
-		tmp = tmp->next;
+		if (!(all.win.win = mlx_new_window(all.win.mlx, all.window_width,
+			all.window_height, "Interstellar")))
+			destroy_all(&all, "error open window\n");
 	}
-	i = -1;
-	while (map[++i])
-	{
-		ft_putendl(map[i]);
-	}
-}
-int main(int argc, char **argv)
-{
-	int fd = open(argv[1], O_RDONLY);
-	char *line = NULL;
-	t_list *head = NULL;
-
-	if (argc != 2)
-	{
-		write(1, "i need map\n", 11);
-		return (0);
-	}
-	while (get_next_line(fd, &line))
-	{
-		ft_lstadd_back(&head, ft_lstnew(line));
-	}
-	ft_lstadd_back(&head, ft_lstnew(line));
-	make_map(&head, ft_lstsize(head));
+	if (all.screenshoot)
+		ft_run(&all);
+	ft_start_event(&all);
+	return (0);
 }
